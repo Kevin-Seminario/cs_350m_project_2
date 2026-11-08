@@ -1,0 +1,5 @@
+policy,tasks,energy_kwh,simulated_seconds,sla0,sla1,sla2,mean_response_us,mean_deadline_ratio,sla0_tasks,sla1_tasks,sla2_tasks,sla3_tasks,wakeups,dvfs_changes,queued,peak_active,memory_warnings,workload,seed_offset,wall_seconds,input_sha256
+round_robin,481258,64.1009388024,86400.72,0,0,0,444264.836165,0.0340783726263,0,0,481258,0,0,0,0,15,0,input_files/provided/Day-1,0,28.625578,e1ede3de3c22af35bcf2791f27ce33a8501b57e88cb2ea3eec891a2da2322717
+best_fit,481258,46.5788289888,86400.72,0,0,0,333380.921225,0.0255725630532,0,0,481258,0,217,0,0,11,0,input_files/provided/Day-1,0,44.222050,e1ede3de3c22af35bcf2791f27ce33a8501b57e88cb2ea3eec891a2da2322717
+min_power,481258,46.5833142859,86400.72,0,0,0,336629.423087,0.0258217094814,0,0,481258,0,217,0,0,13,0,input_files/provided/Day-1,0,53.419339,e1ede3de3c22af35bcf2791f27ce33a8501b57e88cb2ea3eec891a2da2322717
+deadline_energy,481258,47.2648663929,86401.14,0,0,0,728833.426956,0.0559201885559,0,0,481258,0,64295,0,0,17,0,input_files/provided/Day-1,0,86.887800,e1ede3de3c22af35bcf2791f27ce33a8501b57e88cb2ea3eec891a2da2322717

@@ -1,0 +1,28 @@
+machine class:
+{
+    Number of machines: 4
+    CPU type: X86
+    Number of cores: 8
+    Memory: 2048
+    S-States: [30, 25, 15, 10, 5, 1, 0]
+    P-States: [80, 24, 10, 4]
+    C-States: [80, 3, 1, 0]
+    MIPS: [3000, 2400, 1800, 1000]
+    GPUs: no
+}
+
+task class:
+{
+    Start time: 100000
+    End time: 15000000
+    Inter arrival: 100000
+    Expected runtime: 1200000
+    Memory: 32
+    VM type: LINUX
+    GPU enabled: no
+    SLA type: SLA2
+    CPU type: X86
+    Task type: WEB
+    Seed: 1711
+}
+

@@ -1,0 +1,8 @@
+Scheduler policy: best_fit
+SLA violation report
+SLA0: 0%
+SLA1: 0%
+SLA2: 0%
+Total Energy 0.00450762755667KW-Hour
+Simulation run finished in 12.78 seconds
+RESULT policy=best_fit tasks=345 energy_kwh=0.00450762755667 simulated_seconds=12.78 sla0=0 sla1=0 sla2=0 mean_response_us=878312.904348 mean_deadline_ratio=0.108504393539 sla0_tasks=318 sla1_tasks=27 sla2_tasks=0 sla3_tasks=0 wakeups=22 dvfs_changes=0 queued=229 peak_active=84 memory_warnings=0

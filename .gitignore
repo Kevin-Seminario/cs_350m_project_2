@@ -1,0 +1,6 @@
+__pycache__/
+/tests/scheduler_test
+/report.aux
+/report.log
+/report.out
+/scheduler

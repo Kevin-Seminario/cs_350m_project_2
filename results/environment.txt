@@ -1,0 +1,17 @@
+Python: 3.12.3
+Architecture: x86_64
+g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Build flags: -O2 -Wall -Wextra -Wpedantic -std=c++17
+Simulation timing is deterministic; wall time depends on host load.
+The full-day input has no SLA3 tasks; the final best-effort aging refinement does not affect it.
+SHA-256 of supplied immutable interface and simulator files:
+a9cab616274dde60ae352b70855252375d81b548c8cf68f7f43029016958eaea  Interfaces.h
+3e9dda36891e7a4e23f22f38787d6da96e7f3d5518ae6f9bfe09e8b42df9463f  Internal_Interfaces.h
+2aea9533dea642d33cc9fdd02ce2e87216b281c3d6b499a79ec927e0d2ba700a  SimTypes.h
+8b1b84c3d3e3c8d944f2cbc688d1e9eb30a783528c74b810934cba952e1a70dc  Scheduler.hpp
+9491909c9087855b58c1b6e2af2dfc96236e18ea8b7f761716d93ecd1ac96773  Init.o
+72e5c65f6fc805f82ae405c822f3e382db8c038b92cc70183082a1db75861fe4  Machine.o
+4b0e5759e8cf976ea00b6e7756562829e2a85de9022e5edaa3b43b9e0116945d  main.o
+de2ed511922cb15abb22e884bae37254435080fd117fe89e90dbc8e38e6d7093  Simulator.o
+599e92a2756aa17ccbdd816a25ba52db6d9331e5331c92bae1c5324a11224df4  Task.o
+b998b0c738be1bd12dcba0fbb41254d519d33fc6348ceffa5995823a3b31725a  VM.o
