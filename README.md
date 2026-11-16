@@ -1,3 +1,7 @@
+# Grading branch: Deadline-aware energy placement and DVFS
+
+See [ALGORITHM.md](ALGORITHM.md). This branch always runs `deadline_energy`.
+
 # Cloud management for energy and performance
 
 Four selectable scheduling policies for the supplied CloudSim simulator. All public
