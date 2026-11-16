@@ -1,0 +1,8 @@
+Scheduler policy: min_power
+SLA violation report
+SLA0: 0%
+SLA1: 0%
+SLA2: 0%
+Total Energy 0.0699763903642KW-Hour
+Simulation run finished in 52.32 seconds
+RESULT policy=min_power tasks=422 energy_kwh=0.0699763903642 simulated_seconds=52.32 sla0=0 sla1=0 sla2=0 mean_response_us=2047234.7109 mean_deadline_ratio=0.113128847554 sla0_tasks=0 sla1_tasks=422 sla2_tasks=0 sla3_tasks=0 wakeups=14 dvfs_changes=0 queued=0 peak_active=65 memory_warnings=0

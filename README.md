@@ -92,3 +92,53 @@ The simulator objects supply initialization, random task generation, event queue
 and CPU/VM execution. Those components are already implemented; the assignment's
 later general description does not require replacing the provided infrastructure.
 See the assignment PDF for the original specification and course contact details.
+
+## Experiment tools and scheduler tunables (added after the first submission)
+
+All scripts live in `tools/` and are run from the project root.
+
+| Script | Purpose |
+|---|---|
+| `tools/gen_inputs.py` | Generates `inputs/<scenario>_s<seed>.md` (12 scenarios, 5 seeds by default, incl. `overload`, `near_capacity`, `tight_deadline`). `--list` shows them. |
+| `tools/run_matrix.py` | Rebuilds `./simulator`, runs scenario x seed x policy in parallel, writes a CSV plus raw logs. `--provided input_files/provided` adds the supplied workloads. |
+| `tools/report.py` | Aggregates a CSV: paired savings with 95% CI, SLA verdicts, plots, Markdown, a LaTeX table (`--tex`), and `--compare old.csv` regression checks. |
+| `tools/benchmark.py`, `tools/summarize.py` | Original 84-run study and its tables. |
+
+Optional environment variables (defaults reproduce the original behavior except
+`SCHED_WAKE_PENALTY`; pass them with `run_matrix.py --env KEY=VAL`):
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `SCHED_TIMER_MARGIN_US` | 120000 | Scheduling-tick margin in the deadline bound |
+| `SCHED_WAKE_US` | 420000 | Wake-from-S1 estimate |
+| `SCHED_SAFETY` | 1.10 | Multiplier on predicted service time |
+| `SCHED_DVFS_GAIN` | 0 | Minimum fractional saving required to leave P0 |
+| `SCHED_WAKE_PENALTY` | 40 | DE score penalty (J) for waking a sleeping host (old value 0.01) |
+| `SCHED_DWELL_US` | 0 (off) | Idle time before an empty host goes from S1 to deep sleep |
+| `SCHED_DEEP_STATE` | 3 | Deep sleep state (2-5) |
+| `SCHED_DEEP_WAKE_US` | 2000000 | Wake estimate used by the deadline bound for deep-sleeping hosts |
+
+Invalid values stop the run with an explicit error. The RESULT line also reports `deep_sleeps`.
+
+Deep-sleep caveat (measured, 5 seeds): `SCHED_DWELL_US=1000000` cut `deadline_energy` energy by
+roughly 50-59% on diurnal, long_idle, NiceAndSmooth, Day and the Hour workloads with no SLA failures,
+but raised energy 43% on `mem_pressure` (makespan +177%) and worsened SLA misses on `TallShort`
+(SLA0 about 34% -> 72%). It is therefore off by default.
+
+## Appending results to the report
+
+```sh
+make all
+python3 tools/gen_inputs.py                       # 12 scenarios x 5 seeds -> inputs/
+python3 tools/run_matrix.py --provided input_files/provided --label after --timeout 900 --out results/runs/after.csv
+python3 tools/run_matrix.py --provided input_files/provided --label after_deep --timeout 900 \
+    --env SCHED_DWELL_US=1000000 --out results/runs/after_deep.csv
+python3 tools/report.py results/runs/after_deep.csv --compare results/runs/before.csv   # regression check
+python3 tools/make_revision_table.py --before results/runs/before.csv --after results/runs/after.csv \
+    --deep results/runs/after_deep.csv --no-matrix   # writes results/revision_table.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex && pdflatex ... report.tex   # needs pdfLaTeX
+```
+
+`results/runs/before.csv` was produced by the pre-change scheduler (`results/runs/simulator_before`).
+The Day workload makes a full run take roughly 15 minutes; add `--scenarios` to subset.
+`report_updated.tex` inputs `results/revision_table.tex` as Table 5; the original `report.tex` is unchanged.

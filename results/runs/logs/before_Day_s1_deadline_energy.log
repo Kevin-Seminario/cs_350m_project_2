@@ -1,0 +1,8 @@
+Scheduler policy: deadline_energy
+SLA violation report
+SLA0: 0%
+SLA1: 0%
+SLA2: 0%
+Total Energy 47.2648663929KW-Hour
+Simulation run finished in 86401.14 seconds
+RESULT policy=deadline_energy tasks=481258 energy_kwh=47.2648663929 simulated_seconds=86401.14 sla0=0 sla1=0 sla2=0 mean_response_us=728833.426956 mean_deadline_ratio=0.0559201885559 sla0_tasks=0 sla1_tasks=0 sla2_tasks=481258 sla3_tasks=0 wakeups=64295 dvfs_changes=0 queued=0 peak_active=17 memory_warnings=0

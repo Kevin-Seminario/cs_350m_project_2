@@ -1,0 +1,8 @@
+Scheduler policy: round_robin
+SLA violation report
+SLA0: 91.2234042553%
+SLA1: 98.8130563798%
+SLA2: 0%
+Total Energy 0.08728862643KW-Hour
+Simulation run finished in 205.02 seconds
+RESULT policy=round_robin tasks=2178 energy_kwh=0.08728862643 simulated_seconds=205.02 sla0=91.2234042553 sla1=98.8130563798 sla2=0 mean_response_us=97717960.253 mean_deadline_ratio=5.69620349897 sla0_tasks=1504 sla1_tasks=674 sla2_tasks=0 sla3_tasks=0 wakeups=0 dvfs_changes=0 queued=2146 peak_active=2166 memory_warnings=0
