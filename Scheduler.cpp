@@ -1,3 +1,8 @@
+// Grading branch: algorithm-round-robin
+#if !defined(SCHEDULER_ENGINE_TEST) && !defined(SCHEDULER_FIXED_POLICY)
+#define SCHEDULER_FIXED_POLICY "round_robin"
+#endif
+
 // Energy/performance scheduler for the supplied CloudSim interface.
 // Implementation and experiments developed with OpenAI Codex (November 2026).
 // min_power adapts the incremental-power placement rule of Beloglazov,

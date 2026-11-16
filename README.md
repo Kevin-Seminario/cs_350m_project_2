@@ -1,3 +1,7 @@
+# Grading branch: Capacity-aware round robin
+
+See [ALGORITHM.md](ALGORITHM.md). This branch always runs `round_robin`.
+
 # Cloud management for energy and performance
 
 Four selectable scheduling policies for the supplied CloudSim simulator. All public
