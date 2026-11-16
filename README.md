@@ -1,3 +1,7 @@
+# Grading branch: Best-fit consolidation
+
+See [ALGORITHM.md](ALGORITHM.md). This branch always runs `best_fit`.
+
 # Cloud management for energy and performance
 
 Four selectable scheduling policies for the supplied CloudSim simulator. All public

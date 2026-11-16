@@ -1,3 +1,2 @@
-# Development branch: compare all four policies with SCHEDULER_POLICY.
-# Each grading branch pins exactly one policy here and rejects other selections.
-GRADING_POLICY :=
+# algorithm-best-fit: fullest feasible host, fixed P0, idle S1.
+GRADING_POLICY := best_fit
