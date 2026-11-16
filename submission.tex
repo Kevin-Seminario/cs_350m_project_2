@@ -1,0 +1,45 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{hyperref,booktabs,array}
+\hypersetup{colorlinks=true,urlcolor=blue,pdftitle={Cloud Scheduling — Submission Branches}}
+\setlength{\parindent}{0pt}
+\emergencystretch=2em
+\setlength{\parskip}{9pt}
+\begin{document}
+\begin{center}
+{\Large Cloud Management for Energy and Performance}\\[6pt]
+{\large Repository and algorithms to grade}
+\end{center}
+\textbf{GitHub repository:}\\
+\url{https://github.com/Kevin-Seminario/cs_350m_project_2}
+
+\textbf{Branches to grade:}
+\begin{center}
+\small
+\begin{tabular}{p{2.25in}p{3.1in}}
+\toprule
+Branch & Algorithm \\ \midrule
+\href{https://github.com/Kevin-Seminario/cs_350m_project_2/tree/algorithm-round-robin}{\texttt{algorithm-round-robin}} & Capacity-aware round robin \\[6pt]
+\href{https://github.com/Kevin-Seminario/cs_350m_project_2/tree/algorithm-best-fit}{\texttt{algorithm-best-fit}} & Best-fit consolidation \\[6pt]
+\href{https://github.com/Kevin-Seminario/cs_350m_project_2/tree/algorithm-min-power}{\texttt{algorithm-min-power}} & Online minimum incremental power (MBFD adaptation) \\[6pt]
+\href{https://github.com/Kevin-Seminario/cs_350m_project_2/tree/algorithm-deadline-energy}{\texttt{algorithm-deadline-energy}} & Deadline-aware execution-energy placement and DVFS \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Build and run on any grading branch:}
+\begin{verbatim}
+make all
+./simulator input_files/custom/03_surge
+\end{verbatim}
+Each branch selects its algorithm automatically; no environment variable is
+required. See \texttt{ALGORITHM.md} in the branch for its algorithm description.
+Run \texttt{make test} for validation.
+
+\textbf{Comparative report:} \texttt{report\_updated.pdf}, with editable source
+\texttt{report\_updated.tex}. The report compares all four algorithms and identifies
+experimental results separately. Optional deep sleep is disabled for grading.
+
+Please grade the four listed branches. The existing \texttt{main},
+\texttt{attempt-one}, and \texttt{update\_latex} branches retain history and
+comparative development work.
+\end{document}

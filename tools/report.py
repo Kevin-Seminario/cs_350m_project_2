@@ -290,20 +290,32 @@ def compare(new_rows, old_rows, tol, baseline):
     problems, lines = [], []
     for c in nc:
         o = old.get((c["scenario"], c["variant"]))
-        if not o or "e_mean" not in c or "e_mean" not in o:
+        if not o:
+            continue
+        # Check failures before means: an all-failed group has no e_mean.
+        flag = ""
+        if c["failed"] > o["failed"]:
+            flag += " MORE FAILURES"
+            problems.append(f"{c['scenario']}/{c['variant']}: {c['failed']} failed runs")
+        if c["runs"] < o["runs"]:
+            flag += " MISSING RUNS"
+            problems.append(f"{c['scenario']}/{c['variant']}: fewer runs than the baseline")
+        if "e_mean" not in c or "e_mean" not in o:
+            if flag:
+                lines.append([c["scenario"], c["variant"], "-", "-", "-", flag.strip()])
             continue
         d = 100.0 * (c["e_mean"] - o["e_mean"]) / o["e_mean"]
-        flag = ""
         if d > 100 * tol:
             flag = "ENERGY WORSE"
             problems.append(f"{c['scenario']}/{c['variant']}: energy {d:+.1f}%")
         if o["sla_pass"] and not c["sla_pass"]:
             flag += " SLA REGRESSION"
             problems.append(f"{c['scenario']}/{c['variant']}: SLA pass -> fail")
-        if c["failed"] > o["failed"]:
-            flag += " MORE FAILURES"
-            problems.append(f"{c['scenario']}/{c['variant']}: {c['failed']} failed runs")
         lines.append([c["scenario"], c["variant"], f"{o['e_mean']:.5f}", f"{c['e_mean']:.5f}", f"{d:+.2f}%", flag.strip()])
+    present = {(c["scenario"], c["variant"]) for c in nc}
+    for key in old.keys() - present:
+        problems.append(f"{key[0]}/{key[1]}: missing from new results")
+        lines.append([key[0], key[1], "-", "-", "-", "MISSING GROUP"])
     return ["Scenario", "Policy", "Old kWh", "New kWh", "Change", "Flag"], lines, problems
 
 

@@ -54,7 +54,11 @@ struct Assignment {
 class Controller {
 public:
     Policy policy = Policy::DeadlineEnergy;
+#ifdef SCHEDULER_FIXED_POLICY
+    std::string name = SCHEDULER_FIXED_POLICY;
+#else
     std::string name = "deadline_energy";
+#endif
     std::vector<Host> hosts;
     std::unordered_map<TaskId_t, Assignment> jobs;
     std::vector<TaskId_t> pending;
@@ -71,13 +75,21 @@ public:
     double dwell_us = 0.0;       // SCHED_DWELL_US: idle time before deep sleep; 0 = never
     double deep_wake_us = 2000000.0; // SCHED_DEEP_WAKE_US: wake estimate from deep sleep
     double dvfs_gain = 0.0;      // SCHED_DVFS_GAIN: min fractional saving to leave P0
-    MachineState_t deep_state = S3;  // SCHED_DEEP_STATE (2..5)
+    MachineState_t deep_state = S3;  // SCHED_DEEP_STATE: enum values 3..6 (S2..S5)
     double wake_penalty = 40.0;  // SCHED_WAKE_PENALTY: DE score cost (J) of waking a host (0.01 = old)
     unsigned deep_sleeps = 0;
 
     void init() {
         *this = Controller{};
-        if (const char* option = std::getenv("SCHEDULER_POLICY")) name = option;
+        if (const char* option = std::getenv("SCHEDULER_POLICY")) {
+#ifdef SCHEDULER_FIXED_POLICY
+            if (name != option)
+                ThrowException("Unknown SCHEDULER_POLICY for this grading branch: " +
+                               std::string(option) + "; this branch implements " + name);
+#else
+            name = option;
+#endif
+        }
         if (name == "round_robin") policy = Policy::RoundRobin;
         else if (name == "best_fit") policy = Policy::BestFit;
         else if (name == "min_power") policy = Policy::MinPower;
@@ -89,8 +101,10 @@ public:
         dwell_us = env_double("SCHED_DWELL_US", 0.0, 0, 1e12);
         deep_wake_us = env_double("SCHED_DEEP_WAKE_US", 2000000.0, 0, 1e9);
         dvfs_gain = env_double("SCHED_DVFS_GAIN", 0.0, 0.0, 1.0);
-        deep_state = static_cast<MachineState_t>(
-            int(env_double("SCHED_DEEP_STATE", double(S3), double(S2), double(S5))));
+        const double selected_state = env_double("SCHED_DEEP_STATE", double(S3), double(S2), double(S5));
+        if (selected_state != std::floor(selected_state))
+            ThrowException("Invalid value for SCHED_DEEP_STATE: expected an integer from 3 through 6");
+        deep_state = static_cast<MachineState_t>(int(selected_state));
         wake_penalty = env_double("SCHED_WAKE_PENALTY", 40.0, 0.0, 1e6);
         hosts.resize(Machine_GetTotal());
         std::map<CPUType_t, MachineId_t> standby;

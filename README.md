@@ -1,9 +1,33 @@
 # Cloud management for energy and performance
 
 Four selectable scheduling policies for the supplied CloudSim simulator. All public
-headers and supplied simulator objects are unchanged. The implementation, custom
-workloads, tests, and report were developed with OpenAI Codex; the literature
-adaptation is attributed in `Scheduler.cpp` and the report.
+headers and supplied simulator objects are unchanged. The literature-based policy
+is attributed in `Scheduler.cpp` and the report.
+
+## Instructor clarification: four grading branches
+
+The development branch contains shared scheduler infrastructure and supports all
+four policies for comparative experiments. Each proposed grading branch pins one
+algorithm at compile time through `algorithm.mk`; plain `make all` and
+`./simulator INPUT` run that algorithm. A conflicting `SCHEDULER_POLICY` is rejected.
+
+| Grading branch | Algorithm |
+|---|---|
+| `algorithm-round-robin` | Capacity-aware round robin |
+| `algorithm-best-fit` | Best-fit consolidation |
+| `algorithm-min-power` | Online minimum incremental power (MBFD adaptation) |
+| `algorithm-deadline-energy` | Deadline-aware execution-energy placement and DVFS |
+
+The submission document links the four grading branches. Run
+`python3 tools/prepare_algorithm_branches.py --build` to regenerate tested local
+copies in `branch_previews/`. See `SUBMISSION_SETUP.md` for build and verification
+instructions. The repository remains public; the course's private-repository
+requirement has not been met.
+
+Deep sleep is an optional experiment, not one of the four algorithms. It remains
+off in every grading configuration. Its historical default wake estimate is 2 s,
+while S3 wake-up takes about 6 s in the supplied simulator; do not enable it for
+these graded runs. The report identifies those experiments separately.
 
 ## Build and run
 
@@ -52,7 +76,9 @@ objects require a compatible x86-64 Linux C++ ABI.
 - `input_files/custom/02_low_intensity` through `06_dvfs_slack`: five new scenarios.
   `04_heterogeneous` is the suggested input-file submission; it covers all four
   CPU families, all four VM types, GPU affinity, and mixed SLA classes.
-- `report.pdf`: the short comparative report; `report.tex` is its editable source.
+- `report_updated.pdf`: the current comparative report; `report_updated.tex` is its source.
+- `submission.pdf`: submission document listing the four grading branches.
+- `SUBMISSION_SETUP.md`: branch mapping, build commands, and verification instructions.
 - `results/*.csv` and `results/*_logs/`: measured results and raw simulator output.
 
 ```sh
@@ -115,7 +141,7 @@ Optional environment variables (defaults reproduce the original behavior except
 | `SCHED_DVFS_GAIN` | 0 | Minimum fractional saving required to leave P0 |
 | `SCHED_WAKE_PENALTY` | 40 | DE score penalty (J) for waking a sleeping host (old value 0.01) |
 | `SCHED_DWELL_US` | 0 (off) | Idle time before an empty host goes from S1 to deep sleep |
-| `SCHED_DEEP_STATE` | 3 | Deep sleep state (2-5) |
+| `SCHED_DEEP_STATE` | 4 | Simulator enum: 3=S2, 4=S3, 5=S4, 6=S5 (integer only) |
 | `SCHED_DEEP_WAKE_US` | 2000000 | Wake estimate used by the deadline bound for deep-sleeping hosts |
 
 Invalid values stop the run with an explicit error. The RESULT line also reports `deep_sleeps`.
@@ -136,7 +162,7 @@ python3 tools/run_matrix.py --provided input_files/provided --label after_deep -
 python3 tools/report.py results/runs/after_deep.csv --compare results/runs/before.csv   # regression check
 python3 tools/make_revision_table.py --before results/runs/before.csv --after results/runs/after.csv \
     --deep results/runs/after_deep.csv --no-matrix   # writes results/revision_table.tex
-pdflatex -interaction=nonstopmode -halt-on-error report.tex && pdflatex ... report.tex   # needs pdfLaTeX
+pdflatex -interaction=nonstopmode -halt-on-error report_updated.tex   # needs pdfLaTeX
 ```
 
 `results/runs/before.csv` was produced by the pre-change scheduler (`results/runs/simulator_before`).

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check the real, supplied simulator objects against public scheduler outcomes."""
 from pathlib import Path
+import argparse
 import os
 import subprocess
 import sys
@@ -13,13 +14,18 @@ from generate_workloads import machine, task
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--policy", choices=POLICIES, help="the policy pinned by a grading branch")
+    args = parser.parse_args()
+    policies = [args.policy] if args.policy else POLICIES
+    replay_policy = args.policy or "deadline_energy"
     inputs = [ROOT / "Input.md", ROOT / "input_files/custom/01_single_server",
               *sorted((ROOT / "input_files/custom").glob("0[2-6]*")),
               ROOT / "input_files/provided/SpikeyNefarious-1"]
     checks = 0
     for path in inputs:
         populations = set()
-        for policy in POLICIES:
+        for policy in policies:
             result, _ = run(path, policy)
             populations.add(int(result["tasks"]))
             assert int(result["tasks"]) > 0
@@ -32,8 +38,8 @@ def main():
             checks += 1
         assert len(populations) == 1, f"Policies saw different task populations: {path}"
     # Exact reproducibility of simulated metrics; wall-clock time is excluded.
-    first, _ = run(inputs[-1], "deadline_energy")
-    second, _ = run(inputs[-1], "deadline_energy")
+    first, _ = run(inputs[-1], replay_policy)
+    second, _ = run(inputs[-1], replay_policy)
     first.pop("wall_seconds"); second.pop("wall_seconds")
     assert first == second
     with tempfile.TemporaryDirectory(prefix="cloudsim-edge-") as directory:
@@ -56,7 +62,7 @@ def main():
                         task(end=600000, interval=10000, runtime=200000, sla="SLA0"))
         # run() records paths relative to the repo; this fixture lives in /tmp.
         process = subprocess.run([str(ROOT / "simulator"), str(path)], capture_output=True,
-                                 text=True, env={**os.environ, "SCHEDULER_POLICY": "deadline_energy"},
+                                 text=True, env={**os.environ, "SCHEDULER_POLICY": replay_policy},
                                  timeout=30)
         assert process.returncode == 0, process.stdout
         record = dict(item.split("=", 1) for item in next(

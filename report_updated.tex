@@ -20,7 +20,9 @@ Comparative implementation report \quad November 15, 2026
 The objective is to reduce cluster energy while meeting each task class's SLA.
 The delivered implementation changes \texttt{Scheduler.cpp}, retains every supplied
 header and simulator object. The environment variable
-\texttt{SCHEDULER\_POLICY} selects the algorithm. Initialization discovers the machine count, CPU families,
+On the development branch, \texttt{SCHEDULER\_POLICY} selects the algorithm.
+Four grading branches pin RR, BF, MP and DE respectively in \texttt{algorithm.mk};
+the submission document lists their full branch names. Initialization discovers the machine count, CPU families,
 cores, memory, accelerators, and power/performance tables. It makes no assumptions
 about machine numbering, a fixed cluster size, or Linux/x86-only work.
 
@@ -62,6 +64,9 @@ provide a progress fallback. Frequency is reconsidered on admissions, completion
 and periodic checks; all cores change together, as required by the interface.
 
 \textbf{Optional deep sleep and tunables.} By default idle hosts stop at S1. If \texttt{SCHED\_DWELL\_US} is set, an empty non-standby host that has idled that long moves from S1 to S3 (\texttt{SCHED\_DEEP\_STATE}); the deadline bound then uses a longer wake estimate (\texttt{SCHED\_DEEP\_WAKE\_US}). The 120\,ms margin, 420\,ms wake estimate, 1.1 safety factor, 40\,J wake penalty and an optional minimum DVFS saving are environment variables (\texttt{SCHED\_TIMER\_MARGIN\_US}, \texttt{SCHED\_WAKE\_US}, \texttt{SCHED\_SAFETY}, \texttt{SCHED\_WAKE\_PENALTY}, \texttt{SCHED\_DVFS\_GAIN}), so sensitivity can be studied without recompiling; invalid values abort with a diagnostic. Setting \texttt{SCHED\_WAKE\_PENALTY=0.01} with deep sleep off reproduces the original scheduler.
+Deep sleep is an experimental option, not a fifth algorithm, and is disabled in every
+grading configuration: its historical 2\,s wake estimate underestimates the measured
+S3 wake latency of about 6\,s.
 
 \textbf{Shared safeguards.} CPU and VM types must match. Each distinct VM image
 uses 8 MB overhead, counted along with task memory \emph{before} reserving a host
@@ -240,14 +245,9 @@ centers for Cloud computing}, Future Generation Computer Systems 28(5), 755--768
 2012, Algorithm 1, DOI: 10.1016/j.future.2011.04.017.
 \href{https://clouds.cis.unimelb.edu.au/papers/Energy-Aware-CloudResourceAllocation-FGCS2012.pdf}{Author-hosted paper}.
 
-\textbf{Attribution.} OpenAI Codex assisted with the scheduler implementation,
-workload generation, tests, experiment scripts, analysis, and report text. 
-Additionally, Claude Code was used to create the tests and analysis for the
-extended study, the scheduler revision, and additional edits and revisions to the final report. The
-supplied starter interfaces and simulator objects are course materials. MP's
-conceptual source is [1]; no source code was copied from that paper. Measurements
-come from the actual executable and retained logs, rather than generated examples.
-
-\vspace{3em}
+\textbf{Attribution.} OpenAI Codex and Claude Code assisted with implementation,
+tests, experiments, analysis, and report preparation. The simulator and starter
+interfaces are course materials; MP is adapted from [1]. Measurements are from
+the retained simulator logs.
 
 \end{document}

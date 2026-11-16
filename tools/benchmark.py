@@ -49,6 +49,7 @@ def main():
     parser.add_argument("--seed-offsets", nargs="+", type=int, default=[0, 101, 202])
     parser.add_argument("--output", type=Path, default=ROOT / "results" / "benchmark.csv")
     parser.add_argument("--timeout", type=float, default=120)
+    parser.add_argument("--policies", nargs="+", choices=POLICIES, default=POLICIES)
     args = parser.parse_args()
     inputs = args.inputs or [*sorted((ROOT / "input_files" / "custom").glob("0[2-6]*")),
                             ROOT / "input_files/provided/NiceAndSmooth-1",
@@ -61,7 +62,7 @@ def main():
     for path in inputs:
         path = path.resolve()
         for offset in args.seed_offsets:
-            for policy in POLICIES:
+            for policy in args.policies:
                 record, log = run(path, policy, offset, args.timeout)
                 records.append(record)
                 (logdir / f"{path.name}_{offset}_{policy}.log").write_text(log)
