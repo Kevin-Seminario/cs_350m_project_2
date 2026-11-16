@@ -1,3 +1,7 @@
+# Grading branch: Online minimum incremental power (MBFD adaptation)
+
+See [ALGORITHM.md](ALGORITHM.md). This branch always runs `min_power`.
+
 # Cloud management for energy and performance
 
 Four selectable scheduling policies for the supplied CloudSim simulator. All public
