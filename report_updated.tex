@@ -18,9 +18,8 @@ Comparative implementation report \quad November 15, 2026
 
 \section*{Implementation and algorithms}
 The objective is to reduce cluster energy while meeting each task class's SLA.
-The delivered implementation changes \texttt{Scheduler.cpp}, retains every supplied
-header and simulator object. The environment variable
-On the development branch, \texttt{SCHEDULER\_POLICY} selects the algorithm.
+The implementation changes \texttt{Scheduler.cpp} and retains all supplied
+headers and simulator objects. On the development branch, \texttt{SCHEDULER\_POLICY} selects the algorithm.
 Four grading branches pin RR, BF, MP and DE respectively in \texttt{algorithm.mk};
 the submission document lists their full branch names. Initialization discovers the machine count, CPU families,
 cores, memory, accelerators, and power/performance tables. It makes no assumptions
